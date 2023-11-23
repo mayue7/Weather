@@ -6,21 +6,21 @@ namespace Weather.Services;
 public class WeatherService: IWeatherService
 {
     private readonly IHttpClientFactory _httpClientFactory;
-    //private readonly string _apiKey;
+    private readonly IConfiguration _configuration;
 
-    public WeatherService(IHttpClientFactory httpClientFactory)
+    public WeatherService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
     {
         _httpClientFactory = httpClientFactory;
-        //_apiKey = apiKey;
+        _configuration = configuration;
     }
 
     public async Task<WeatherInfoResponse> GetCurrentWeatherByCountryByCity(string city, string country)
     {
         var httpClient = _httpClientFactory.CreateClient("WeatherApi");
-        var apiUrl = $"weather?q={city},{country}&appid=8b7535b42fe1c551f18028f64e8688f7";
+        string apiKey = _configuration["OpenWeatherMap:ApiKey"];
+        var apiUrl = $"weather?q={city},{country}&appid={apiKey}";
 
         return await httpClient.GetFromJsonAsync<WeatherInfoResponse>(apiUrl);
     }
 }
-
 

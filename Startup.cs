@@ -1,9 +1,12 @@
+using AspNetCoreRateLimit;
 using Weather.Interfaces;
 using Weather.Services;
 using Weather.Commands;
 
+
 public class Startup
 {
+    
     public Startup(IConfiguration configuration)
     {
         Configuration = configuration;
@@ -17,13 +20,20 @@ public class Startup
         {
             client.BaseAddress = new Uri("https://api.openweathermap.org/data/2.5/");
         });
-
+        
         services.AddScoped<IWeatherService, WeatherService>();
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetCurrentWeatherRequestCommand>());
 
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
+
+        // Register the rate limiting services
+        services.AddMemoryCache();
+        services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
+        services.Configure<IpRateLimitPolicies>(Configuration.GetSection("IpRateLimitPolicies"));
+        services.AddInMemoryRateLimiting();
+        services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -42,6 +52,8 @@ public class Startup
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
+
+        app.UseIpRateLimiting();
 
         app.UseRouting();
 
