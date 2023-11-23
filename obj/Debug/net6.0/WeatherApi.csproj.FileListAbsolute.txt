@@ -44,6 +44,7 @@
 /Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/WeatherApi.runtimeconfig.json
 /Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/WeatherApi.dll
 /Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/WeatherApi.pdb
+/Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/AspNetCoreRateLimit.dll
 /Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/MediatR.dll
 /Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/MediatR.Contracts.dll
 /Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/MediatR.Extensions.Microsoft.DependencyInjection.dll
@@ -51,7 +52,9 @@
 /Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/Microsoft.EntityFrameworkCore.Abstractions.dll
 /Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/Microsoft.EntityFrameworkCore.InMemory.dll
 /Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/Microsoft.Extensions.Logging.Abstractions.dll
 /Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/Microsoft.OpenApi.dll
+/Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/Newtonsoft.Json.dll
 /Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/Swashbuckle.AspNetCore.Swagger.dll
 /Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/Swashbuckle.AspNetCore.SwaggerUI.dll
