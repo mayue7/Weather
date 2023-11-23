@@ -1123,11 +1123,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/mayuejiang/weather/WeatherApi/WeatherApi.csproj",
+      "projectUniqueName": "/Users/mayuejiang/Projects/Weather/WeatherApi.csproj",
       "projectName": "WeatherApi",
-      "projectPath": "/Users/mayuejiang/weather/WeatherApi/WeatherApi.csproj",
+      "projectPath": "/Users/mayuejiang/Projects/Weather/WeatherApi.csproj",
       "packagesPath": "/Users/mayuejiang/.nuget/packages/",
-      "outputPath": "/Users/mayuejiang/weather/WeatherApi/obj/",
+      "outputPath": "/Users/mayuejiang/Projects/Weather/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/mayuejiang/.nuget/NuGet/NuGet.Config"
