@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import "../../styles/WeatherForm.css";
 
 const WeatherForm = ({onSubmit}) =>{
     const {register, handleSubmit, formState: { errors }} = useForm();
