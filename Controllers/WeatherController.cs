@@ -19,10 +19,16 @@ public class WeatherController : ControllerBase
 
     [HttpGet("GetCurrentWeather")]
     [ProducesResponseType(typeof(WeatherInfoResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.TooManyRequests)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetCurrentWeather([FromQuery] GetCurrentWeatherRequestCommand query)
     {
         var response = await mediator.Send(query);
+        if (response == null)
+        {
+            // Handle rate limit exceeded response
+            return StatusCode((int)HttpStatusCode.TooManyRequests, "Rate limit exceeded. Please try again later.");
+        }
         return Ok(response);
     }
 }

@@ -3,7 +3,6 @@ using Weather.Interfaces;
 using Weather.Services;
 using Weather.Commands;
 
-
 public class Startup
 {
 
@@ -59,6 +58,7 @@ public class Startup
         app.UseRouting();
 
         app.UseAuthorization();
+        app.UseMiddleware<ApiKeyMiddleware>();
 
         app.UseEndpoints(endpoints =>
         {
