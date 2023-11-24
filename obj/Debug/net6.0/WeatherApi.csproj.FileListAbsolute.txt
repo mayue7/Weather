@@ -39,6 +39,9 @@
 /Users/mayuejiang/weather/WeatherApi/bin/Debug/net6.0/MediatR.Extensions.Microsoft.DependencyInjection.dll
 /Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/appsettings.Development.json
 /Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/appsettings.json
+/Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/weather-ui/package-lock.json
+/Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/weather-ui/package.json
+/Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/weather-ui/public/manifest.json
 /Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/WeatherApi
 /Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/WeatherApi.deps.json
 /Users/mayuejiang/Projects/Weather/bin/Debug/net6.0/WeatherApi.runtimeconfig.json
