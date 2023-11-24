@@ -6,7 +6,7 @@ using Weather.Commands;
 
 public class Startup
 {
-    
+
     public Startup(IConfiguration configuration)
     {
         Configuration = configuration;
@@ -20,7 +20,7 @@ public class Startup
         {
             client.BaseAddress = new Uri("https://api.openweathermap.org/data/2.5/");
         });
-        
+
         services.AddScoped<IWeatherService, WeatherService>();
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetCurrentWeatherRequestCommand>());
 
@@ -30,9 +30,10 @@ public class Startup
 
         // Register the rate limiting services
         services.AddMemoryCache();
-        services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
-        services.Configure<IpRateLimitPolicies>(Configuration.GetSection("IpRateLimitPolicies"));
+        services.Configure<ClientRateLimitOptions>(Configuration.GetSection("ClientRateLimiting"));
+        services.Configure<ClientRateLimitPolicies>(Configuration.GetSection("ClientRateLimitPolicies"));
         services.AddInMemoryRateLimiting();
+
         services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
     }
 

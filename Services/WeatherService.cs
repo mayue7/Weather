@@ -3,7 +3,7 @@ using WeatherApi;
 
 namespace Weather.Services;
 
-public class WeatherService: IWeatherService
+public class WeatherService : IWeatherService
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;

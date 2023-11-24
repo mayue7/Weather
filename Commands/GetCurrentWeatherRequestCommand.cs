@@ -5,13 +5,13 @@ using WeatherApi;
 
 namespace Weather.Commands;
 
-public class GetCurrentWeatherRequestCommand: IRequest<WeatherInfoResponse>
+public class GetCurrentWeatherRequestCommand : IRequest<WeatherInfoResponse>
 {
     public string City { get; set; } = string.Empty;
     public string Country { get; set; } = string.Empty;
 }
 
-public class GetCurrentWeatherRequestCommandHandler: IRequestHandler<GetCurrentWeatherRequestCommand, WeatherInfoResponse>
+public class GetCurrentWeatherRequestCommandHandler : IRequestHandler<GetCurrentWeatherRequestCommand, WeatherInfoResponse>
 {
     private readonly IMediator _mediator;
     private readonly IWeatherService _weatherService;
