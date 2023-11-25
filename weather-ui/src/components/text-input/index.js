@@ -25,6 +25,7 @@ const TextInput = ({ label, control, name, rules }) => {
         }}
         onBlur={field.onBlur}
         value={inputValue}
+        data-testid={field.name}
       />
       {invalid && <p className="errorMessage">{error.message}</p>}
     </>

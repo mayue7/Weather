@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 
-const useGetWeather = (city, country) => {
+export const useGetWeather = (city, country) => {
   const requestOptions = {
     method: "GET",
     headers: { "x-api-key": "weather-api-key-2" },
@@ -23,5 +23,3 @@ const useGetWeather = (city, country) => {
     },
   );
 };
-
-export default useGetWeather;

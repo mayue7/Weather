@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { useState } from "react";
-import useGetWeather from "./hooks/useGetWeather";
+import { useGetWeather } from "./hooks/useGetWeather";
 import { useForm } from "react-hook-form";
 import TextInput from "./components/text-input";
 import SubmitButton from "./components/submit-button";
@@ -40,6 +40,7 @@ function App() {
         />
         <SubmitButton label="Get Weather" />
       </form>
+
       {isSuccess && weatherData && (
         <>
           <h2 className="weatherResponse">Current Weather Information:</h2>
