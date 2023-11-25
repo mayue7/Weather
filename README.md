@@ -16,7 +16,7 @@ WeatherApi project:
 3. 'dotnet run'
 
 weather-ui project:
-1. open the terminal then `cd weather-ui'
+1. open the terminal then `cd weather-ui`
 2. `npm install`
 3. `npm start`
 
@@ -25,5 +25,5 @@ ApiTests project:
 2. `dotnet test`
 
 Run frontend tests:
-1. open the terminal then `cd weather-ui'
+1. open the terminal then `cd weather-ui`
 2. `npm run test`
