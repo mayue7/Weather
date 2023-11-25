@@ -13,12 +13,10 @@ public class GetCurrentWeatherRequestCommand : IRequest<WeatherDescription>
 
 public class GetCurrentWeatherRequestCommandHandler : IRequestHandler<GetCurrentWeatherRequestCommand, WeatherDescription>
 {
-    private readonly IMediator _mediator;
     private readonly IWeatherService _weatherService;
 
-    public GetCurrentWeatherRequestCommandHandler(IMediator mediator, IWeatherService weatherService)
+    public GetCurrentWeatherRequestCommandHandler(IWeatherService weatherService)
     {
-        _mediator = mediator;
         _weatherService = weatherService;
     }
 

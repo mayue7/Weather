@@ -12,10 +12,18 @@ public class Startup
     }
 
     public IConfiguration Configuration { get; }
-    public string  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+    public string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
     public void ConfigureServices(IServiceCollection services)
     {
+        // Register the rate limiting services
+        services.AddOptions();
+        services.AddMemoryCache();
+        services.Configure<ClientRateLimitOptions>(Configuration.GetSection("ClientRateLimiting"));
+        services.Configure<ClientRateLimitPolicies>(Configuration.GetSection("ClientRateLimitPolicies"));
+        services.AddInMemoryRateLimiting();
+        services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+
         services.AddCors(options =>
         {
             options.AddPolicy(name: MyAllowSpecificOrigins,
@@ -39,14 +47,6 @@ public class Startup
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
-
-        // Register the rate limiting services
-        services.AddMemoryCache();
-        services.Configure<ClientRateLimitOptions>(Configuration.GetSection("ClientRateLimiting"));
-        services.Configure<ClientRateLimitPolicies>(Configuration.GetSection("ClientRateLimitPolicies"));
-        services.AddInMemoryRateLimiting();
-
-        services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -66,10 +66,10 @@ public class Startup
         app.UseHttpsRedirection();
         app.UseStaticFiles();
 
-        //app.UseIpRateLimiting();
+        app.UseClientRateLimiting();
 
         app.UseRouting();
-        
+
         app.UseCors(MyAllowSpecificOrigins);
 
         app.UseAuthorization();

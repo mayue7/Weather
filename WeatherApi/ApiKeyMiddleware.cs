@@ -1,27 +1,31 @@
+using System.Collections.Concurrent;
 using System.Net;
 using WeatherApi;
 
 public class ApiKeyMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly Dictionary<string, int> _requestCounts;
     private readonly IConfiguration _configuration;
+    private readonly ConcurrentDictionary<string, RateLimitInfo> _rateLimits;
 
     public ApiKeyMiddleware(RequestDelegate next, IConfiguration configuration)
     {
         _next = next;
-        _requestCounts = new Dictionary<string, int>();
         _configuration = configuration;
+        _rateLimits = new ConcurrentDictionary<string, RateLimitInfo>();
     }
 
     public async Task InvokeAsync(HttpContext context)
     {
         var apiKey = context.Request.Headers["x-api-key"].FirstOrDefault();
+        var limitPerHourString = _configuration["ClientRateLimitPolicies:LimitPerHour"];
+        var limitPerHour = Int32.Parse(limitPerHourString);
 
         if (string.IsNullOrEmpty(apiKey))
         {
             context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-            await context.Response.WriteAsJsonAsync(new WeatherDescription(){
+            await context.Response.WriteAsJsonAsync(new WeatherDescription()
+            {
                 Description = "API key is missing."
             });
             return;
@@ -29,26 +33,40 @@ public class ApiKeyMiddleware
         if (!IsValidApiKey(apiKey))
         {
             context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-            await context.Response.WriteAsJsonAsync(new WeatherDescription(){
+            await context.Response.WriteAsJsonAsync(new WeatherDescription()
+            {
                 Description = "Invalid API key."
             });
             return;
         }
 
-        if (!IsRateLimitExceeded(apiKey))
+        if (!_rateLimits.TryGetValue(apiKey, out var rateLimitInfo))
         {
-            context.Response.StatusCode = (int)HttpStatusCode.TooManyRequests;
-            await context.Response.WriteAsJsonAsync(new WeatherDescription(){
-                Description = "Rate limit exceeded. Please try again later."
-            });
+            rateLimitInfo = new RateLimitInfo
+            {
+                LastRequestTime = DateTime.UtcNow,
+                Requests = 0
+            };
+            _rateLimits.TryAdd(apiKey, rateLimitInfo);
         }
 
-        // Continue with the request if the API key is valid and rate limit has not been exceeded
-        if (IsValidApiKey(apiKey) && IsRateLimitExceeded(apiKey))
+        var currentTime = DateTime.UtcNow;
+        var timeSinceLastRequest = currentTime - rateLimitInfo.LastRequestTime;
+
+        if (timeSinceLastRequest < TimeSpan.FromHours(1) && rateLimitInfo.Requests >= limitPerHour)
         {
-            IncrementRequestCount(apiKey);
-            await _next(context);
+            context.Response.StatusCode = (int)HttpStatusCode.TooManyRequests;
+            await context.Response.WriteAsJsonAsync(new WeatherDescription()
+            {
+                Description = "Rate limit exceeded. Please try again later."
+            });
+            return;
         }
+
+        rateLimitInfo.LastRequestTime = currentTime;
+        rateLimitInfo.Requests++;
+
+        await _next(context);
     }
 
     private bool IsValidApiKey(string apiKey)
@@ -56,23 +74,10 @@ public class ApiKeyMiddleware
         var weatherApiKeys = _configuration.GetSection("WeatherApi:WeatherApiKeys").Get<string[]>();
         return !string.IsNullOrEmpty(apiKey) && weatherApiKeys != null && weatherApiKeys.Contains(apiKey);
     }
+}
 
-    private bool IsRateLimitExceeded(string apiKey)
-    {
-        var limitPerHourString = _configuration["ClientRateLimitPolicies:LimitPerHour"];
-        return _requestCounts.TryGetValue(apiKey, out var count) ? count < Int32.Parse(limitPerHourString) : true;
-    }
-
-    private void IncrementRequestCount(string apiKey)
-    {
-        // Increment the request count for the API key
-        if (_requestCounts.ContainsKey(apiKey))
-        {
-            _requestCounts[apiKey]++;
-        }
-        else
-        {
-            _requestCounts[apiKey] = 1;
-        }
-    }
+public class RateLimitInfo
+{
+    public DateTime LastRequestTime { get; set; }
+    public int Requests { get; set; }
 }
