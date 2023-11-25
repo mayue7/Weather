@@ -12,9 +12,22 @@ public class Startup
     }
 
     public IConfiguration Configuration { get; }
+    public string  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddCors(options =>
+        {
+            options.AddPolicy(name: MyAllowSpecificOrigins,
+            builder =>
+            {
+                builder.WithOrigins("http://localhost:3000")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod()
+                   .AllowCredentials();
+            });
+        });
+
         services.AddHttpClient("WeatherApi", client =>
         {
             client.BaseAddress = new Uri("https://api.openweathermap.org/data/2.5/");
@@ -56,6 +69,8 @@ public class Startup
         app.UseIpRateLimiting();
 
         app.UseRouting();
+        
+        app.UseCors(MyAllowSpecificOrigins);
 
         app.UseAuthorization();
         app.UseMiddleware<ApiKeyMiddleware>();
