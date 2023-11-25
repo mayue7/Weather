@@ -14,13 +14,26 @@ public class WeatherService : IWeatherService
         _configuration = configuration;
     }
 
-    public async Task<WeatherInfoResponse> GetCurrentWeatherByCountryByCity(string city, string country)
+    public async Task<WeatherDescription> GetCurrentWeatherByCountryByCity(string city, string country)
     {
         var httpClient = _httpClientFactory.CreateClient("WeatherApi");
         string openWeatherApiKey = _configuration["OpenWeatherMap:OpenWeatherApiKey"];
         var apiUrl = $"weather?q={city},{country}&appid={openWeatherApiKey}";
 
-        return await httpClient.GetFromJsonAsync<WeatherInfoResponse>(apiUrl);
+        var weatherResponse = new WeatherDescription();
+        try {
+            var response = await httpClient.GetFromJsonAsync<WeatherInfoResponse>(apiUrl);
+            if (response != null && response.Weather != null) 
+            {
+                weatherResponse.Description = response.Weather[0].Description;
+                return weatherResponse;
+            } 
+        } 
+        catch 
+        {
+
+        }
+        return weatherResponse;
     }
 }
 

@@ -4,7 +4,6 @@ public class ApiKeyMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly Dictionary<string, int> _requestCounts;
-    private readonly int _limitPerHour = 5;
     private readonly IConfiguration _configuration;
 
     public ApiKeyMiddleware(RequestDelegate next, IConfiguration configuration)
@@ -33,7 +32,7 @@ public class ApiKeyMiddleware
 
         if (!IsRateLimitExceeded(apiKey))
         {
-            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            context.Response.StatusCode = (int)HttpStatusCode.TooManyRequests;
             await context.Response.WriteAsync("Rate limit exceeded. Please try again later.");
         }
 
@@ -53,7 +52,8 @@ public class ApiKeyMiddleware
 
     private bool IsRateLimitExceeded(string apiKey)
     {
-        return _requestCounts.TryGetValue(apiKey, out var count) ? count < _limitPerHour : true;
+        var limitPerHourString = _configuration["ClientRateLimitPolicies:LimitPerHour"];
+        return _requestCounts.TryGetValue(apiKey, out var count) ? count < Int32.Parse(limitPerHourString) : true;
     }
 
     private void IncrementRequestCount(string apiKey)

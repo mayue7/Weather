@@ -66,7 +66,7 @@ public class Startup
         app.UseHttpsRedirection();
         app.UseStaticFiles();
 
-        app.UseIpRateLimiting();
+        //app.UseIpRateLimiting();
 
         app.UseRouting();
         
