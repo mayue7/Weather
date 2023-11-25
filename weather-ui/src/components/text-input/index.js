@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useController } from "react-hook-form";
 import "./styles.css";
 
@@ -11,6 +11,7 @@ const TextInput = ({ label, control, name, rules }) => {
     control,
     rules,
   });
+  const [inputValue, setInputValue] = useState(field.value);
 
   return (
     <>
@@ -18,9 +19,12 @@ const TextInput = ({ label, control, name, rules }) => {
       <input
         type="text"
         name={field.name}
-        onChange={field.onChange}
+        onChange={(e) => {
+          setInputValue(e.target.value);
+          field.onChange(e.target.value);
+        }}
         onBlur={field.onBlur}
-        value={field.value}
+        value={inputValue}
       />
       {invalid && <p className="errorMessage">{error.message}</p>}
     </>

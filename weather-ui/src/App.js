@@ -1,19 +1,30 @@
 import "./App.css";
-import React from "react";
+import React, { useState } from "react";
 import useGetWeather from "./hooks/useGetWeather";
 import { useForm } from "react-hook-form";
 import TextInput from "./components/text-input";
 import SubmitButton from "./components/submit-button";
 
-function App(props) {
-  const { data, status, onSubmit } = useGetWeather(props.city, props.country);
+function App() {
+  const [city, setCity] = useState();
+  const [country, setCountry] = useState();
 
-  const { control, handleSubmit } = useForm();
+  const { data: weatherData, status, refetch } = useGetWeather(city, country);
+
+  const { control, handleSubmit, values } = useForm({
+    defaultValues: {
+      city: "",
+      country: "",
+    },
+  });
 
   const submitForm = (data) => {
-    console.log(data);
-    onSubmit(data);
+    setCity(data.city);
+    setCountry(data.country);
+    refetch();
   };
+
+  console.log(city, country, values);
   return (
     <div>
       <form onSubmit={handleSubmit(submitForm)}>
@@ -31,10 +42,10 @@ function App(props) {
         />
         <SubmitButton label="Get Weather" />
       </form>
-      {status === "success" && (
+      {status === "success" && weatherData && weatherData.weather && (
         <>
           <h2>Weather Information</h2>
-          <p>Description: {data.weather.description}</p>
+          <p>Description: {weatherData.weather[0].description}</p>
         </>
       )}
     </div>
