@@ -45,3 +45,18 @@ body {
     transform: rotate(360deg);
   }
 }
+
+form {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.form {
+  background: #3b4267;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+hr {
+  margin-top: 30px;
+}
