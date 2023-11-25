@@ -1,4 +1,5 @@
 using System.Net;
+using WeatherApi;
 
 public class ApiKeyMiddleware
 {
@@ -20,20 +21,26 @@ public class ApiKeyMiddleware
         if (string.IsNullOrEmpty(apiKey))
         {
             context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-            await context.Response.WriteAsync("API key is missing.");
+            await context.Response.WriteAsJsonAsync(new WeatherDescription(){
+                Description = "API key is missing."
+            });
             return;
         }
         if (!IsValidApiKey(apiKey))
         {
             context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-            await context.Response.WriteAsync("Invalid API key ");
+            await context.Response.WriteAsJsonAsync(new WeatherDescription(){
+                Description = "Invalid API key."
+            });
             return;
         }
 
         if (!IsRateLimitExceeded(apiKey))
         {
             context.Response.StatusCode = (int)HttpStatusCode.TooManyRequests;
-            await context.Response.WriteAsync("Rate limit exceeded. Please try again later.");
+            await context.Response.WriteAsJsonAsync(new WeatherDescription(){
+                Description = "Rate limit exceeded. Please try again later."
+            });
         }
 
         // Continue with the request if the API key is valid and rate limit has not been exceeded

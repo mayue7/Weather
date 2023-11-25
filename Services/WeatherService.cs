@@ -29,9 +29,9 @@ public class WeatherService : IWeatherService
                 return weatherResponse;
             } 
         } 
-        catch 
+        catch (Exception e)
         {
-
+            weatherResponse.Description = $"Got Exception: ${e}";
         }
         return weatherResponse;
     }
