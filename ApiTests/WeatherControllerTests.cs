@@ -46,4 +46,23 @@ public class WeatherControllerTestss
     }
 
 
+    [Theory, AutoData]
+    public async Task etCurrentWeatherRequestCommand_WithException_ReturnsInternalServerError(string city, string country)
+    {
+        var command = _fixture
+            .Build<GetCurrentWeatherRequestCommand>()
+            .With(c => c.City, city)
+            .With(c => c.Country, country)
+            .Create();
+
+        _mockMediator
+            .Setup(m => m.Send(command, CancellationToken.None))
+            .ThrowsAsync(new Exception());
+
+        var controller = new WeatherController(_mockMediator.Object);
+
+        Func<Task> action = async () => await controller.GetCurrentWeather(command);
+
+        await action.Should().ThrowAsync<Exception>();
+    }
 }
