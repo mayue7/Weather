@@ -9,9 +9,9 @@ function App() {
   const [city, setCity] = useState();
   const [country, setCountry] = useState();
 
-  const { data: weatherData, status, refetch } = useGetWeather(city, country);
+  const { data: weatherData, isSuccess } = useGetWeather(city, country);
 
-  const { control, handleSubmit, values } = useForm({
+  const { control, handleSubmit } = useForm({
     defaultValues: {
       city: "",
       country: "",
@@ -21,10 +21,8 @@ function App() {
   const submitForm = (data) => {
     setCity(data.city);
     setCountry(data.country);
-    refetch();
   };
 
-  console.log(city, country, values);
   return (
     <div>
       <form onSubmit={handleSubmit(submitForm)}>
@@ -42,10 +40,10 @@ function App() {
         />
         <SubmitButton label="Get Weather" />
       </form>
-      {status === "success" && weatherData && weatherData.weather && (
+      {isSuccess && weatherData && (
         <>
-          <h2>Weather Information</h2>
-          <p>Description: {weatherData.weather[0].description}</p>
+          <h2 className="weatherResponse">Current Weather Information:</h2>
+          <p className="weatherDescription">{weatherData.description}</p>
         </>
       )}
     </div>

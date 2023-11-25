@@ -1,15 +1,3 @@
-button {
-  appearance: none;
-  margin-top: 40px;
-  border: 1px solid #333;
-  margin-bottom: 20px;
-  text-transform: uppercase;
-  padding: 10px 20px;
-  border-radius: 4px;
-  align-items: center;
-  justify-content: center;
-}
-
 button[type="submit"] {
   background: #ec5990;
   color: white;
@@ -18,8 +6,9 @@ button[type="submit"] {
   margin-top: 40px;
   padding: 20px;
   font-size: 16px;
-  font-weight: 100;
+  font-weight: 200;
   letter-spacing: 10px;
+  border-radius: 4px;
 }
 
 button[type="submit"]:hover {
@@ -31,15 +20,4 @@ button[type="submit"]:active {
   transform: translateY(3px);
   border: 1px solid transparent;
   opacity: 0.8;
-}
-
-button[type="button"] {
-  display: block;
-  appearance: none;
-  background: #333;
-  color: white;
-  border: none;
-  text-transform: uppercase;
-  padding: 10px 20px;
-  border-radius: 4px;
 }

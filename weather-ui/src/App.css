@@ -60,3 +60,28 @@ form {
 hr {
   margin-top: 30px;
 }
+.weatherResponse {
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 2;
+  text-align: left;
+  display: block;
+  margin-bottom: 13px;
+  margin-top: 20px;
+  color: rgb(252, 251, 251);
+  font-size: 28px;
+  font-weight: 400;
+}
+
+.weatherDescription {
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 2;
+  text-align: left;
+  display: block;
+  margin-bottom: 13px;
+  margin-top: 20px;
+  color: rgb(252, 251, 251);
+  font-size: 24px;
+  font-weight: 300;
+}

@@ -18,7 +18,8 @@ const useGetWeather = (city, country) => {
     ["data", { city, country }],
     () => fetchWeather({ city, country }),
     {
-      enabled: !!(city && country),
+      enabled: city !== undefined && country !== undefined,
+      refetchOnWindowFocus: false,
     },
   );
 };
